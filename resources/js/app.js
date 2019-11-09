@@ -10,16 +10,40 @@ require('admin-lte');
 
 window.Vue = require('vue');
 
-import VueRouter from 'vue-router'
+import moment from 'moment';
+import VueRouter from 'vue-router';
+import {
+    Form,
+    HasError,
+    AlertError,
+    AlertErrors,
+    AlertSuccess
+} from 'vform';
+
+window.form = Form;
+
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+Vue.component(AlertErrors.name, AlertErrors)
+Vue.component(AlertSuccess.name, AlertSuccess)
+
 Vue.use(VueRouter);
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
-    { path: '/profile', component: require('./components/Profile.vue').default }
+    { path: '/profile', component: require('./components/Profile.vue').default },
+    { path: '/users', component: require('./components/Users.vue').default }
 ]
 
 const router = new VueRouter({
     routes // short for `routes: routes`
+})
+
+Vue.filter('upText', function (text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+});
+Vue.filter('myDate', function(date) {
+    return moment(date).format('MMMM Do YYYY')
 })
 
 /**
@@ -43,5 +67,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    mode: 'history',
     router
 });
